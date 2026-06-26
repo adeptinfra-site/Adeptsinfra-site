@@ -1,6 +1,5 @@
 post.html
 
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -36,7 +35,9 @@ post.html
 </footer>
 
 <script>
-// Simple post loader
+// ============================================================
+// BLOG POST DATA – Add new posts here
+// ============================================================
 const posts = {
 1: {
 title: "CMMC 2.0: What Defense Contractors Must Know in 2026",
@@ -48,7 +49,7 @@ body: `<p>The Cybersecurity Maturity Model Certification (CMMC) 2.0 is here. Unl
 <li><strong>Audit & Accountability (AU):</strong> Enable comprehensive logging with tamper-proof storage.</li>
 <li><strong>System & Communications Protection (SC):</strong> Enforce FIPS 140-2 validated encryption for data at rest and in transit.</li>
 </ul>
-<p>Cloudflare's global network can help with DDoS protection and WAF, but you'll need to layer your own controls for full compliance. <a href="https://www.defense.gov/CMMC/" target="_blank">Official CMMC site →</a></p>`
+<p>Cloudflare's global network can help with DDoS protection and WAF, but you'll need to layer your own controls for full compliance.</p>`
 },
 2: {
 title: "Running Llama 3 on Cloudflare Workers: AI at the Edge",
@@ -75,8 +76,20 @@ body: `<p>Retrieval-Augmented Generation (RAG) lets you ground LLM outputs in yo
 </ol>
 <p>This approach meets CMMC's AC and SC requirements while delivering accurate, context-aware answers to your team.</p>`
 }
+// 👇 ADD NEW POSTS BELOW (copy this pattern, change the number)
+/*
+,
+4: {
+title: "Your New Post Title",
+date: "Month Day, Year",
+body: `<p>Your full blog post content here. Use HTML tags like <strong>bold</strong>, <a href="#">links</a>, <ul><li>lists</li></ul>, and <pre><code>code blocks</code></pre>.</p>`
+}
+*/
 };
 
+// ============================================================
+// DON'T EDIT BELOW THIS LINE – It loads the post automatically
+// ============================================================
 const params = new URLSearchParams(window.location.search);
 const id = params.get('post') || '1';
 const post = posts[id] || posts['1'];
@@ -87,4 +100,3 @@ document.getElementById('post-body').innerHTML = post.body;
 </script>
 </body>
 </html>
-```
