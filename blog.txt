@@ -1,7 +1,6 @@
 
 blog.html
 
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -48,6 +47,16 @@ blog.html
 <p>Build Retrieval-Augmented Generation systems that handle Controlled Unclassified Information (CUI) while maintaining FedRAMP-equivalent controls.</p>
 <a href="post.html?post=3" class="read-more">Read More →</a>
 </article>
+
+<!-- 👇 ADD NEW BLOG POSTS BELOW THIS LINE -->
+<!--
+<article class="blog-preview">
+<h2><a href="post.html?post=4">Your New Blog Post Title</a></h2>
+<div class="meta">Month Day, Year • X min read</div>
+<p>Your blog excerpt goes here. Keep it short and punchy.</p>
+<a href="post.html?post=4" class="read-more">Read More →</a>
+</article>
+-->
 </section>
 </main>
 
@@ -56,4 +65,3 @@ blog.html
 </footer>
 </body>
 </html>
-```
