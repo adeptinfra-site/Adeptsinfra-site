@@ -1,0 +1,87 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Blog Post – AdeptInfra</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<header>
+<nav>
+<div class="logo">⚡ Adept<span>Infra</span></div>
+<ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="blog.html">Blog</a></li>
+</ul>
+</nav>
+</header>
+
+<main>
+<section class="post-content">
+<h1 id="post-title">Loading post...</h1>
+<div class="meta" id="post-meta"></div>
+<div id="post-body">
+<p>Loading content...</p>
+</div>
+<a href="blog.html" class="back-link">← Back to all posts</a>
+</section>
+</main>
+
+<footer>
+<p>&copy; 2026 AdeptInfra. Built with <span>☁️</span> on Cloudflare.</p>
+</footer>
+
+<script>
+const posts = {
+1: {
+title: "CMMC 2.0: What Defense Contractors Must Know in 2026",
+date: "June 24, 2026",
+body: `<p>The Cybersecurity Maturity Model Certification (CMMC) 2.0 is here. Unlike its predecessor, CMMC 2.0 streamlines requirements into three levels (Foundational, Advanced, Expert) and allows for self-assessment at Level 2.</p>
+<p>For infrastructure providers, this means you need to align with NIST SP 800-171 controls while preparing for potential third-party assessments. Key areas include:</p>
+<ul>
+<li><strong>Access Control (AC):</strong> Implement MFA and role-based permissions for all CUI environments.</li>
+<li><strong>Audit & Accountability (AU):</strong> Enable comprehensive logging with tamper-proof storage.</li>
+<li><strong>System & Communications Protection (SC):</strong> Enforce FIPS 140-2 validated encryption for data at rest and in transit.</li>
+</ul>
+<p>Cloudflare's global network can help with DDoS protection and WAF, but you'll need to layer your own controls for full compliance.</p>`
+},
+2: {
+title: "Running Llama 3 on Cloudflare Workers: AI at the Edge",
+date: "June 20, 2026",
+body: `<p>Cloudflare Workers AI now supports Llama 3, Mistral, and other open-weight models. You can run inference with <strong>zero infrastructure</strong> and <strong>sub-100ms latency</strong> globally.</p>
+<p>Here's a minimal Worker example:</p>
+<pre><code>export default { async fetch(request) {
+const response = await ai.run('@cf/meta/llama-3-8b-instruct', {
+messages: [{ role: 'user', content: 'Explain CMMC in 2 sentences' }]
+});
+return new Response(JSON.stringify(response));
+}}</code></pre>
+<p>For CMMC environments, Workers AI keeps data in-region and doesn't persist prompts — critical for handling CUI safely.</p>`
+},
+3: {
+title: "RAG Pipelines for CUI: Secure Retrieval Without Compromise",
+date: "June 15, 2026",
+body: `<p>Retrieval-Augmented Generation (RAG) lets you ground LLM outputs in your own documents. For CUI, this means you can build secure Q&A systems without exposing sensitive data to third-party APIs.</p>
+<p><strong>Architecture for compliance:</strong></p>
+<ol>
+<li><strong>Vector DB:</strong> Use Pinecone or Cloudflare's Vectorize with zero-retention policies.</li>
+<li><strong>Embeddings:</strong> Generate on-device or via Workers AI with data isolation.</li>
+<li><strong>Access control:</strong> Implement per-user/document permissions via JWTs.</li>
+</ol>
+<p>This approach meets CMMC's AC and SC requirements while delivering accurate, context-aware answers to your team.</p>`
+}
+};
+
+const params = new URLSearchParams(window.location.search);
+const id = params.get('post') || '1';
+const post = posts[id] || posts['1'];
+
+document.getElementById('post-title').textContent = post.title;
+document.getElementById('post-meta').textContent = post.date;
+document.getElementById('post-body').innerHTML = post.body;
+</script>
+</body>
+</html>
+```
