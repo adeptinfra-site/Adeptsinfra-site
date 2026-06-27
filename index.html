@@ -1,5 +1,3 @@
-ndex.html
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -51,5 +49,319 @@ ndex.html
 <footer>
 <p>&copy; 2026 AdeptInfra. Built with <span>☁️</span> on Cloudflare.</p>
 </footer>
+
+<!-- ============================================================
+AI CHATBOT – Floating Chat Widget
+⚠️ UPDATE THE WORKER_URL BELOW WITH YOUR ACTUAL URL
+============================================================ -->
+<style>
+/* Chat Button */
+#chat-toggle {
+position: fixed;
+bottom: 24px;
+right: 24px;
+width: 60px;
+height: 60px;
+border-radius: 50%;
+background: #0a3d6b;
+color: white;
+border: none;
+font-size: 28px;
+cursor: pointer;
+box-shadow: 0 4px 16px rgba(10, 61, 107, 0.4);
+z-index: 9999;
+transition: all 0.3s ease;
+}
+#chat-toggle:hover {
+transform: scale(1.08);
+box-shadow: 0 6px 24px rgba(10, 61, 107, 0.6);
+}
+
+/* Chat Window */
+#chat-window {
+position: fixed;
+bottom: 100px;
+right: 24px;
+width: 380px;
+max-width: 90vw;
+height: 500px;
+max-height: 70vh;
+background: white;
+border-radius: 20px;
+box-shadow: 0 12px 48px rgba(0, 0, 0, 0.2);
+display: none;
+flex-direction: column;
+overflow: hidden;
+z-index: 9998;
+border: 1px solid #e2e8f0;
+}
+#chat-window.open {
+display: flex;
+}
+
+/* Chat Header */
+#chat-header {
+background: #0a3d6b;
+color: white;
+padding: 16px 20px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+font-weight: 700;
+font-size: 16px;
+}
+#chat-close {
+background: none;
+border: none;
+color: white;
+font-size: 22px;
+cursor: pointer;
+opacity: 0.8;
+}
+#chat-close:hover {
+opacity: 1;
+}
+
+/* Chat Messages */
+#chat-messages {
+flex: 1;
+padding: 16px 18px;
+overflow-y: auto;
+background: #f8fafc;
+display: flex;
+flex-direction: column;
+gap: 10px;
+}
+.message {
+max-width: 85%;
+padding: 10px 14px;
+border-radius: 14px;
+font-size: 15px;
+line-height: 1.5;
+word-wrap: break-word;
+}
+.message.user {
+background: #0a3d6b;
+color: white;
+align-self: flex-end;
+border-bottom-right-radius: 4px;
+}
+.message.bot {
+background: white;
+color: #1a1a2e;
+align-self: flex-start;
+border-bottom-left-radius: 4px;
+box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+border: 1px solid #e2e8f0;
+}
+.message.bot strong {
+color: #0a3d6b;
+}
+.typing-indicator {
+color: #94a3b8;
+font-size: 14px;
+padding: 4px 14px;
+align-self: flex-start;
+}
+
+/* Chat Input */
+#chat-input-area {
+display: flex;
+padding: 12px 16px;
+gap: 10px;
+border-top: 1px solid #e2e8f0;
+background: white;
+}
+#chat-input {
+flex: 1;
+padding: 10px 14px;
+border: 1px solid #d1d5db;
+border-radius: 30px;
+font-size: 15px;
+outline: none;
+transition: 0.2s;
+}
+#chat-input:focus {
+border-color: #0a3d6b;
+box-shadow: 0 0 0 3px rgba(10, 61, 107, 0.15);
+}
+#chat-send {
+background: #0a3d6b;
+color: white;
+border: none;
+border-radius: 30px;
+padding: 10px 20px;
+font-weight: 600;
+cursor: pointer;
+transition: 0.2s;
+}
+#chat-send:hover {
+background: #1a5f8c;
+}
+#chat-send:disabled {
+opacity: 0.5;
+cursor: not-allowed;
+}
+
+/* Quick suggestions */
+.suggestions {
+padding: 8px 16px 12px;
+display: flex;
+flex-wrap: wrap;
+gap: 6px;
+background: #f8fafc;
+border-top: 1px solid #e2e8f0;
+}
+.suggestion-btn {
+background: white;
+border: 1px solid #d1d5db;
+border-radius: 20px;
+padding: 4px 14px;
+font-size: 13px;
+color: #0a3d6b;
+cursor: pointer;
+transition: 0.2s;
+}
+.suggestion-btn:hover {
+background: #0a3d6b;
+color: white;
+border-color: #0a3d6b;
+}
+
+@media (max-width: 480px) {
+#chat-window {
+bottom: 80px;
+right: 12px;
+width: calc(100vw - 24px);
+height: 60vh;
+}
+}
+</style>
+
+<!-- Chat HTML -->
+<button id="chat-toggle" aria-label="Chat with AdeptBot">💬</button>
+
+<div id="chat-window">
+<div id="chat-header">
+<span>🤖 AdeptBot</span>
+<button id="chat-close">✕</button>
+</div>
+<div id="chat-messages">
+<div class="message bot">
+👋 Hi! I'm AdeptBot. Ask me about <strong>CMMC compliance</strong>, <strong>AI infrastructure</strong>, or anything related to secure cloud operations.
+</div>
+</div>
+<div id="chat-input-area">
+<input type="text" id="chat-input" placeholder="Ask me anything..." />
+<button id="chat-send">Send</button>
+</div>
+<div class="suggestions">
+<button class="suggestion-btn">What is CMMC?</button>
+<button class="suggestion-btn">NIST 800-171 basics</button>
+<button class="suggestion-btn">RAG pipeline</button>
+<button class="suggestion-btn">Workers AI</button>
+</div>
+</div>
+
+<script>
+// ============================================================
+// CHATBOT LOGIC
+// ============================================================
+// ⚠️ UPDATE THIS URL with your actual Worker URL
+const WORKER_URL = 'https://ai-chatbotv2.adeptscomer.workers.dev';
+
+const toggle = document.getElementById('chat-toggle');
+const chatWindow = document.getElementById('chat-window');
+const closeBtn = document.getElementById('chat-close');
+const input = document.getElementById('chat-input');
+const sendBtn = document.getElementById('chat-send');
+const messages = document.getElementById('chat-messages');
+
+// Toggle chat window
+toggle.addEventListener('click', () => {
+chatWindow.classList.toggle('open');
+});
+closeBtn.addEventListener('click', () => {
+chatWindow.classList.remove('open');
+});
+
+// Quick suggestion buttons
+document.querySelectorAll('.suggestion-btn').forEach(btn => {
+btn.addEventListener('click', () => {
+input.value = btn.textContent;
+sendMessage();
+});
+});
+
+// Send on Enter key
+input.addEventListener('keydown', (e) => {
+if (e.key === 'Enter') sendMessage();
+});
+sendBtn.addEventListener('click', sendMessage);
+
+async function sendMessage() {
+const question = input.value.trim();
+if (!question) return;
+
+// Add user message to chat
+addMessage('user', question);
+input.value = '';
+sendBtn.disabled = true;
+
+// Show typing indicator
+const typingId = addTypingIndicator();
+
+try {
+const response = await fetch(WORKER_URL, {
+method: 'POST',
+headers: { 'Content-Type': 'application/json' },
+body: JSON.stringify({ message: question })
+});
+
+const data = await response.json();
+
+// Remove typing indicator
+removeTypingIndicator(typingId);
+
+if (data.error) {
+addMessage('bot', '⚠️ ' + data.error);
+} else {
+addMessage('bot', data.reply);
+}
+} catch (error) {
+removeTypingIndicator(typingId);
+addMessage('bot', '⚠️ Sorry, I\'m having trouble connecting. Please try again later.');
+console.error('Chat error:', error);
+}
+
+sendBtn.disabled = false;
+messages.scrollTop = messages.scrollHeight;
+}
+
+function addMessage(role, text) {
+const div = document.createElement('div');
+div.className = `message ${role}`;
+div.innerHTML = text.replace(/\n/g, '<br>');
+messages.appendChild(div);
+messages.scrollTop = messages.scrollHeight;
+return div;
+}
+
+function addTypingIndicator() {
+const div = document.createElement('div');
+div.className = 'typing-indicator';
+div.textContent = 'AdeptBot is thinking...';
+messages.appendChild(div);
+messages.scrollTop = messages.scrollHeight;
+return div;
+}
+
+function removeTypingIndicator(element) {
+if (element && element.parentNode) {
+element.parentNode.removeChild(element);
+}
+}
+</script>
 </body>
 </html>
+
