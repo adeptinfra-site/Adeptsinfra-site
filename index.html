@@ -23,7 +23,7 @@
 <p class="subhead">Mastering CMMC compliance &amp; AI infrastructure — so you stay secure, scalable, and ahead.</p>
 <div class="cta-buttons">
 <a href="blog.html" class="btn primary">Read Our Blog</a>
-<a href="https://contact-form.your-subdomain.workers.dev" class="btn secondary">Contact Us</a>
+<a href="https://contact-form.adeptscorner.workers.dev" class="btn secondary">Contact Us</a>
 </div>
 </section>
 
@@ -52,10 +52,8 @@
 
 <!-- ============================================================
 AI CHATBOT – Floating Chat Widget
-⚠️ UPDATE THE WORKER_URL BELOW WITH YOUR ACTUAL URL
 ============================================================ -->
 <style>
-/* Chat Button */
 #chat-toggle {
 position: fixed;
 bottom: 24px;
@@ -76,8 +74,6 @@ transition: all 0.3s ease;
 transform: scale(1.08);
 box-shadow: 0 6px 24px rgba(10, 61, 107, 0.6);
 }
-
-/* Chat Window */
 #chat-window {
 position: fixed;
 bottom: 100px;
@@ -98,8 +94,6 @@ border: 1px solid #e2e8f0;
 #chat-window.open {
 display: flex;
 }
-
-/* Chat Header */
 #chat-header {
 background: #0a3d6b;
 color: white;
@@ -121,8 +115,6 @@ opacity: 0.8;
 #chat-close:hover {
 opacity: 1;
 }
-
-/* Chat Messages */
 #chat-messages {
 flex: 1;
 padding: 16px 18px;
@@ -163,8 +155,6 @@ font-size: 14px;
 padding: 4px 14px;
 align-self: flex-start;
 }
-
-/* Chat Input */
 #chat-input-area {
 display: flex;
 padding: 12px 16px;
@@ -202,8 +192,6 @@ background: #1a5f8c;
 opacity: 0.5;
 cursor: not-allowed;
 }
-
-/* Quick suggestions */
 .suggestions {
 padding: 8px 16px 12px;
 display: flex;
@@ -227,7 +215,6 @@ background: #0a3d6b;
 color: white;
 border-color: #0a3d6b;
 }
-
 @media (max-width: 480px) {
 #chat-window {
 bottom: 80px;
@@ -238,7 +225,6 @@ height: 60vh;
 }
 </style>
 
-<!-- Chat HTML -->
 <button id="chat-toggle" aria-label="Chat with AdeptBot">💬</button>
 
 <div id="chat-window">
@@ -264,10 +250,6 @@ height: 60vh;
 </div>
 
 <script>
-// ============================================================
-// CHATBOT LOGIC
-// ============================================================
-// ⚠️ UPDATE THIS URL with your actual Worker URL
 const WORKER_URL = 'https://ai-chatbotv2.adeptscomer.workers.dev';
 
 const toggle = document.getElementById('chat-toggle');
@@ -277,7 +259,6 @@ const input = document.getElementById('chat-input');
 const sendBtn = document.getElementById('chat-send');
 const messages = document.getElementById('chat-messages');
 
-// Toggle chat window
 toggle.addEventListener('click', () => {
 chatWindow.classList.toggle('open');
 });
@@ -285,7 +266,6 @@ closeBtn.addEventListener('click', () => {
 chatWindow.classList.remove('open');
 });
 
-// Quick suggestion buttons
 document.querySelectorAll('.suggestion-btn').forEach(btn => {
 btn.addEventListener('click', () => {
 input.value = btn.textContent;
@@ -293,7 +273,6 @@ sendMessage();
 });
 });
 
-// Send on Enter key
 input.addEventListener('keydown', (e) => {
 if (e.key === 'Enter') sendMessage();
 });
@@ -303,12 +282,10 @@ async function sendMessage() {
 const question = input.value.trim();
 if (!question) return;
 
-// Add user message to chat
 addMessage('user', question);
 input.value = '';
 sendBtn.disabled = true;
 
-// Show typing indicator
 const typingId = addTypingIndicator();
 
 try {
@@ -319,8 +296,6 @@ body: JSON.stringify({ message: question })
 });
 
 const data = await response.json();
-
-// Remove typing indicator
 removeTypingIndicator(typingId);
 
 if (data.error) {
